@@ -1,4 +1,5 @@
 "use client";
+import { Clock } from "lucide-react";
 import React, { useState } from "react";
 import "react-clock/dist/Clock.css";
 import TimePicker from "react-time-picker";
@@ -33,7 +34,7 @@ function parseTimeString(time: string): number {
 function formatMinutesToTime(totalMinutes: number): string {
   const hours = Math.floor(totalMinutes / 60);
   const minutes = totalMinutes % 60;
-  return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}`;
+  return `${String(hours).padStart(2, "0")}h${String(minutes).padStart(2, "0")}`;
 }
 
 const WorkHoursCalculator: React.FC = () => {
@@ -86,13 +87,14 @@ const WorkHoursCalculator: React.FC = () => {
   };
 
   return (
-    <div className="flex h-screen w-full items-center justify-center bg-[#0f0f0f] text-center">
-      <div className="mx-auto max-w-md bg-[#0f0f0f] p-4 text-white">
-        <h2 className="mb-4 text-xl font-bold">
-          Calculadora de Horário de Saída
-        </h2>
-        <div className="mb-2 flex w-64 items-center justify-between">
-          <label>Horário de Entrada:</label>
+    <div className="flex min-h-screen w-full items-center justify-center bg-[#212121] font-lexend">
+      <div className="flex w-1/2 flex-col items-center justify-center gap-1 rounded-xl bg-[#303030] p-4">
+        <div className="mb-6 flex items-center gap-2">
+          <Clock size={32} />
+          <p className="text-3xl">Calculadora de Horário de Saída</p>
+        </div>
+        <div className="mb-2 flex w-72 items-center justify-between">
+          <label className="text-lg font-light">Horário de Entrada:</label>
           <TimePicker
             onChange={handleEntradaChange}
             value={entrada}
@@ -100,43 +102,44 @@ const WorkHoursCalculator: React.FC = () => {
             disableClock
             clearIcon={null}
             required
-            className="text-end"
+            className="bg-[#212121] text-end"
           />
         </div>
-        <div className="mb-2 flex w-64 items-center justify-between">
-          <label>Saída para Intervalo:</label>
+        <div className="mb-2 flex w-72 items-center justify-between">
+          <label className="text-lg font-light">Saída para Intervalo:</label>
           <TimePicker
             onChange={handleSaidaIntervaloChange}
             value={saidaIntervalo}
             format="HH:mm"
             disableClock
             clearIcon={null}
-            className="text-end"
+            className="bg-[#212121] text-end"
           />
         </div>
-        <div className="mb-2 flex w-64 items-center justify-between">
-          <label>Volta do Intervalo:</label>
+        <div className="mb-2 flex w-72 items-center justify-between">
+          <label className="text-lg font-light">Volta do Intervalo:</label>
           <TimePicker
             onChange={handleVoltaIntervaloChange}
             value={voltaIntervalo}
             format="HH:mm"
             disableClock
             clearIcon={null}
-            className="text-end"
+            className="bg-[#212121] text-end"
           />
         </div>
-        <div className="flex justify-end">
+        <div className="flex justify-start">
           <button
             onClick={calcularSaida}
-            className="mt-4 rounded bg-blue-600 px-4 py-2 text-white"
+            className="mt-6 rounded bg-[#0045c6] px-4 py-2 text-white transition ease-in-out hover:bg-[#003393] active:bg-[#003393]"
           >
             Calcular
           </button>
         </div>
 
         {saidaFinal && (
-          <div className="mt-4">
-            <strong>Horário de Saída Final: </strong> {saidaFinal}
+          <div className="mt-6 flex items-center justify-center gap-3 text-xl">
+            <p>Horário de Saída Final:</p>
+            <p className="text-2xl font-bold">{saidaFinal}</p>
           </div>
         )}
       </div>

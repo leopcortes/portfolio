@@ -1,6 +1,7 @@
 import {
   BatteryCharging,
   Box,
+  BriefcaseBusiness,
   Calculator,
   ChartArea,
   CircleGauge,
@@ -139,6 +140,13 @@ export default function Calculadora() {
           text="Pace"
           icon={<Rabbit strokeWidth={2.5} />}
           color="bg-[#ed4224] hover:bg-[#b1321c] active:bg-[#b1321c]"
+        />
+
+        <ButtonCalculator
+          link="/calculadora/outros/exati"
+          text="Expediente"
+          icon={<BriefcaseBusiness strokeWidth={2.5} />}
+          color="bg-[#0045c6] hover:bg-[#003393] active:bg-[#003393]"
         />
       </div>
     </div>
