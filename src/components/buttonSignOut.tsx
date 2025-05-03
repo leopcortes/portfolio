@@ -5,7 +5,7 @@ export function ButtonSignOut() {
   return (
     <Button
       onClick={() => signOut()}
-      className="rounded-md border-2 px-4 text-xls transition duration-200 ease-linear"
+      className="text-xls rounded-md border-2 px-4 transition duration-200 ease-linear"
     >
       Sair
     </Button>
