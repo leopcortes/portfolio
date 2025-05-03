@@ -26,21 +26,21 @@ export default function Calculadora() {
     <div className="flex min-h-screen w-full items-center justify-center bg-[#212121] p-8 sm:p-24">
       <div className="grid w-full grid-cols-1 bg-[#212121] md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         <ButtonCalculator
-          link="/calculadoras/calculadoracientifica"
+          link="/calculadora/outros/cientifica"
           text="Científica"
           icon={<Calculator strokeWidth={2.5} />}
           color="bg-[#e02443] hover:bg-[#c20e2c] active:bg-[#c20e2c]"
         />
 
         <ButtonCalculator
-          link="/calculadoras/calculadorasistemas"
+          link="/calculadora/outros/sistemas"
           text="Sistemas"
           icon={<SquareSigma strokeWidth={2.5} />}
           color="bg-[#e02443] hover:bg-[#c20e2c] active:bg-[#c20e2c]"
         />
 
         <ButtonCalculator
-          link="/calculadoras/calculadorasigaa"
+          link="/calculadora/outros/sigaa"
           text="SIGAA"
           icon={<GraduationCap strokeWidth={2.5} />}
           color="bg-[#00853e] hover:bg-[#046d35] active:bg-[#046d35]"
@@ -53,90 +53,90 @@ export default function Calculadora() {
         />
 
         <ButtonCalculator
-          link="/calculadoras/conversaovelocidade"
+          link="/calculadora/conversao/velocidade"
           text="Velocidade"
           icon={<Gauge strokeWidth={2.5} />}
         />
 
         <ButtonCalculator
-          link="/calculadoras/conversaomassa"
+          link="/calculadora/conversao/massa"
           text="Massa"
           icon={<Weight strokeWidth={2.5} />}
         />
 
         <ButtonCalculator
-          link="/calculadoras/conversaocomprimento"
+          link="/calculadora/conversao/comprimento"
           text="Comprimento"
           icon={<Ruler strokeWidth={2.5} />}
         />
 
         <ButtonCalculator
-          link="/calculadoras/conversaodados"
+          link="/calculadora/conversao/dados"
           text="Dados"
           icon={<DatabaseZap strokeWidth={2.5} />}
         />
 
         <ButtonCalculator
-          link="/calculadoras/conversaotemperatura"
+          link="/calculadora/conversao/temperatura"
           text="Temperatura"
           icon={<ThermometerSun strokeWidth={2.5} />}
         />
 
         <ButtonCalculator
-          link="/calculadoras/conversaovolume"
+          link="/calculadora/conversao/volume"
           text="Volume"
           icon={<Box strokeWidth={2.5} />}
         />
 
         <ButtonCalculator
-          link="/calculadoras/conversaoarea"
+          link="/calculadora/conversao/area"
           text="Área"
           icon={<ChartArea strokeWidth={2.5} />}
         />
 
         <ButtonCalculator
-          link="/calculadoras/conversaopressao"
+          link="/calculadora/conversao/pressao"
           text="Pressão"
           icon={<CircleGauge strokeWidth={2.5} />}
         />
 
         <ButtonCalculator
-          link="/calculadoras/associacaoresistores"
+          link="/calculadora/associacao/resistores"
           text="Resistores"
           icon={<Unplug strokeWidth={2.5} />}
           color="bg-[#814e13] hover:bg-[#663b0b] active:bg-[#663b0b]"
         />
 
         <ButtonCalculator
-          link="/calculadoras/associacaocapacitores"
+          link="/calculadora/associacao/capacitores"
           text="Capacitores"
           icon={<CircuitBoard strokeWidth={2.5} />}
           color="bg-[#814e13] hover:bg-[#663b0b] active:bg-[#663b0b]"
         />
 
         <ButtonCalculator
-          link="/calculadoras/associacaoindutores"
+          link="/calculadora/associacao/indutores"
           text="Indutores"
           icon={<BatteryCharging strokeWidth={2.5} />}
           color="bg-[#814e13] hover:bg-[#663b0b] active:bg-[#663b0b]"
         />
 
         <ButtonCalculator
-          link="/calculadoras/codigocoresresistores"
+          link="/calculadora/outros/coresresistores"
           text="Cores Resistores"
           icon={<Paintbrush strokeWidth={2.5} />}
           color="bg-[#bea05d] hover:bg-[#a7894f] active:bg-[#a7894f]"
         />
 
         <ButtonCalculator
-          link="/calculadoras/calculadoraimc"
+          link="/calculadora/outros/imc"
           text="IMC"
           icon={<Scale strokeWidth={2.5} />}
           color="bg-[#194b8c] hover:bg-[#0f3566] active:bg-[#0f3566]"
         />
 
         <ButtonCalculator
-          link="/calculadoras/calculadorapace"
+          link="/calculadora/outros/pace"
           text="Pace"
           icon={<Rabbit strokeWidth={2.5} />}
           color="bg-[#ed4224] hover:bg-[#b1321c] active:bg-[#b1321c]"
