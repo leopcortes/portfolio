@@ -88,7 +88,7 @@ const WorkHoursCalculator: React.FC = () => {
 
   return (
     <div className="flex min-h-screen w-full items-center justify-center bg-[#212121] font-lexend">
-      <div className="flex w-1/2 flex-col items-center justify-center gap-1 rounded-xl bg-[#303030] p-4">
+      <div className="flex w-fit flex-col items-center justify-center gap-1 rounded-xl bg-[#303030] px-10 py-6">
         <div className="mb-6 flex items-center gap-2">
           <Clock size={32} />
           <p className="text-3xl">Calculadora de Horário de Saída</p>
