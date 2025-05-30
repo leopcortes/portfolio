@@ -1,9 +1,9 @@
 "use client";
-import { Clock } from "lucide-react";
 import React, { useState } from "react";
 import "react-clock/dist/Clock.css";
 import TimePicker from "react-time-picker";
 import "react-time-picker/dist/TimePicker.css";
+import { Input } from "~/components/ui/input";
 
 function parseTimeString(time: string): number {
   const parts = time.split(":");
@@ -32,15 +32,15 @@ function parseTimeString(time: string): number {
 }
 
 function formatMinutesToTime(totalMinutes: number): string {
-  const hours = Math.floor(totalMinutes / 60);
+  const hours = Math.floor(totalMinutes / 60) % 24; // só para 24h
   const minutes = totalMinutes % 60;
-  return `${String(hours).padStart(2, "0")}h${String(minutes).padStart(2, "0")}`;
+  return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}`;
 }
 
-const WorkHoursCalculator: React.FC = () => {
+
+export default function WorkHoursCalculator() {
   const [entrada, setEntrada] = useState("10:00");
-  const [saidaIntervalo, setSaidaIntervalo] = useState("");
-  const [voltaIntervalo, setVoltaIntervalo] = useState("");
+  const [tempoIntervalo, setTempoIntervalo] = useState("00:15");
   const [saidaFinal, setSaidaFinal] = useState("");
 
   const handleEntradaChange = (value: string | null) => {
@@ -48,49 +48,37 @@ const WorkHoursCalculator: React.FC = () => {
       setEntrada(value);
     }
   };
-  const handleSaidaIntervaloChange = (value: string | null) => {
+  const handleTempoIntervaloChange = (value: string | null) => {
     if (value !== null) {
-      setSaidaIntervalo(value);
+      setTempoIntervalo(value);
     }
   };
-
-  const handleVoltaIntervaloChange = (value: string | null) => {
-    if (value !== null) {
-      setVoltaIntervalo(value);
-    }
-  };
-
+  
   const calcularSaida = () => {
-    if (entrada && !saidaIntervalo && !voltaIntervalo) {
-      // Caso 1: Apenas horário de entrada
+    if (entrada && !tempoIntervalo) {
       const entradaMin = parseTimeString(entrada);
-      const saida = entradaMin + 6 * 60;
+      const saida = entradaMin + 6 * 60 + 15;
       setSaidaFinal(formatMinutesToTime(saida));
-    } else if (entrada && saidaIntervalo && voltaIntervalo) {
-      // Caso 2: Entrada + saída para intervalo + volta
+    } else if (entrada && tempoIntervalo) {
       const entradaMin = parseTimeString(entrada);
-      const saidaIntMin = parseTimeString(saidaIntervalo);
-      const voltaIntMin = parseTimeString(voltaIntervalo);
-
-      const intervaloDuracao = voltaIntMin - saidaIntMin;
-      const cargaTotal = 6 * 60;
-      const saida = voltaIntMin + (cargaTotal - (saidaIntMin - entradaMin));
-
-      if (intervaloDuracao < 15) {
+      const tempoIntMin = parseTimeString(tempoIntervalo);
+  
+      if (isNaN(tempoIntMin) || tempoIntMin < 15) {
         setSaidaFinal("Erro: intervalo deve ser no mínimo 15 minutos");
-      } else {
-        setSaidaFinal(formatMinutesToTime(saida));
+        return;
       }
+      const saida = entradaMin + 6 * 60 + tempoIntMin;
+      setSaidaFinal(formatMinutesToTime(saida));
     } else {
       setSaidaFinal("Preencha os campos corretamente");
     }
   };
+  
 
   return (
     <div className="flex min-h-screen w-full items-center justify-center bg-[#212121] font-lexend">
       <div className="flex w-fit flex-col items-center justify-center gap-1 rounded-xl bg-[#303030] px-10 py-6">
         <div className="mb-6 flex items-center gap-2">
-          <Clock size={32} />
           <p className="text-3xl">Calculadora de Horário de Saída</p>
         </div>
         <div className="mb-2 flex w-72 items-center justify-between">
@@ -106,24 +94,14 @@ const WorkHoursCalculator: React.FC = () => {
           />
         </div>
         <div className="mb-2 flex w-72 items-center justify-between">
-          <label className="text-lg font-light">Saída para Intervalo:</label>
+          <label className="text-lg font-light">Duração do Intervalo:</label>
           <TimePicker
-            onChange={handleSaidaIntervaloChange}
-            value={saidaIntervalo}
+            onChange={handleTempoIntervaloChange}
+            value={tempoIntervalo}
             format="HH:mm"
             disableClock
             clearIcon={null}
-            className="bg-[#212121] text-end"
-          />
-        </div>
-        <div className="mb-2 flex w-72 items-center justify-between">
-          <label className="text-lg font-light">Volta do Intervalo:</label>
-          <TimePicker
-            onChange={handleVoltaIntervaloChange}
-            value={voltaIntervalo}
-            format="HH:mm"
-            disableClock
-            clearIcon={null}
+            required
             className="bg-[#212121] text-end"
           />
         </div>
@@ -138,7 +116,7 @@ const WorkHoursCalculator: React.FC = () => {
 
         {saidaFinal && (
           <div className="mt-6 flex items-center justify-center gap-3 text-xl">
-            <p>Horário de Saída Final:</p>
+            <p>Horário de Saída:</p>
             <p className="text-2xl font-bold">{saidaFinal}</p>
           </div>
         )}
@@ -146,5 +124,3 @@ const WorkHoursCalculator: React.FC = () => {
     </div>
   );
 };
-
-export default WorkHoursCalculator;
