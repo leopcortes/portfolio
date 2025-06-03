@@ -46,12 +46,12 @@ export default function SobreMim() {
             <strong>Idiomas</strong>: Português (Nativo), Inglês (Fluente),
             Espanhol (Básico). <br></br>
             <strong>Front End</strong>: HTML, CSS e TailwindCSS, JavaScript e
-            TypeScript, ReactJS e React Native, Next.js. <br></br>
-            <strong>Back End</strong>: C++ e C (Avançado), Python
-            (Intermediário), Java e Rust (Iniciante), MySQL, Prisma, tRCP.{" "}
+            TypeScript, ReactJS e React Native, Vue.js, Next.js. <br></br>
+            <strong>Back End</strong>: C++ e C (Avançado), Python e Java
+            (Intermediário), Rust (Iniciante), MySQL, Prisma, tRCP.{" "}
             <br></br>
-            <strong>Controle de Versão</strong>: Git e Github. <br></br>
-            <strong>Ferramentas e IDEs</strong>: Pacote Office, VSCode, Apache
+            <strong>Controle de Versão</strong>: Git, Github e Gitlab. <br></br>
+            <strong>Ferramentas e IDEs</strong>: Pacote Office, VSCode, IntelliJ, Apache
             NetBeans.<br></br>
             <strong>Metodologias Ágeis</strong>: Scrum, XP. <br></br>
             <strong>Outros</strong>: Linux, WSL, Programação Embarcada

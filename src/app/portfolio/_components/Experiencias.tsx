@@ -1,5 +1,6 @@
 "use client";
 import { Calendar, MapPin } from "lucide-react";
+import Link from "next/link";
 import { Element } from "react-scroll";
 
 export default function Experiencias() {
@@ -26,7 +27,7 @@ export default function Experiencias() {
             <p className="font-lexend text-2xl">
               Struct Empresa Júnior de Engenharia da Computação
             </p>
-            <p>Desenvolvedor Full Stack</p>
+            <p>Voluntário Desenvolvedor Web</p>
             <ul className="list-disc pl-5 text-texto_secundario">
               <li>
                 Gerência e desenvolvimento de projetos internos e externos.
@@ -49,33 +50,37 @@ export default function Experiencias() {
           </div>
         </div>
 
-        {/* <div className="mt-8 flex justify-between gap-8 border-b-[2px] border-b-fundo_azul_2 pb-4">
+        <div className="mt-8 flex justify-between gap-8 border-b-[2px] border-b-fundo_azul_2 pb-4">
           <div className="flex flex-col gap-2">
             <p className="font-lexend text-2xl">
               Struct Empresa Júnior de Engenharia da Computação
             </p>
-            <p>Desenvolvedor Full Stack</p>
+            <p>Estágio - Desenvolvedor Full Stack</p>
             <ul className="list-disc pl-5 text-texto_secundario">
               <li>
-                Gerência e desenvolvimento de projetos internos e externos.
+                Desenvolvimento Web com Vue, Java e PostgreSQL.
               </li>
-              <li>Gestão financeira e administrativa da empresa.</li>
-              <li>Design de interfaces e protótipos funcionais.</li>
+              <li>Auxiliar integração entre Back-End e App Mobile.</li>
+              <li className="underline">
+                <Link href={"https://exati.com/pt/"} target="_blank">
+                exati.com
+                </Link>
+              </li>
             </ul>
           </div>
 
           <div className="flex flex-col gap-2">
             <div className="flex items-center gap-2">
               <Calendar />
-              <p>Julho/2023 – Dezembro/2024</p>
+              <p>Abril/2025 - Presente</p>
             </div>
 
             <div className="flex items-center gap-2">
               <MapPin />
-              <p>Universidade de Brasília, Brasília - DF</p>
+              <p>Curitiba, Paraná (Remoto)</p>
             </div>
           </div>
-        </div> */}
+        </div>
       </div>
     </Element>
   );

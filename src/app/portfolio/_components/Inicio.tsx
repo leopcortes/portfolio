@@ -26,7 +26,7 @@ export default function Inicio() {
 
           <div className="flex justify-between">
             <p className="text-[0.95rem] leading-10 text-texto_secundario">
-              Desenvolvedor Web Full Stack.
+              Desenvolvedor Full Stack.
             </p>
 
             <button
