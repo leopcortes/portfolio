@@ -37,9 +37,12 @@ function formatMinutesToTime(totalMinutes: number): string {
 }
 
 
+const JORNADA_MINUTOS = 8 * 60;
+const INTERVALO_MINIMO = 60;
+
 export default function WorkHoursCalculator() {
   const [entrada, setEntrada] = useState("10:00");
-  const [tempoIntervalo, setTempoIntervalo] = useState("00:15");
+  const [tempoIntervalo, setTempoIntervalo] = useState("01:00");
   const [saidaFinal, setSaidaFinal] = useState("");
 
   const handleEntradaChange = (value: string | null) => {
@@ -56,17 +59,17 @@ export default function WorkHoursCalculator() {
   const calcularSaida = () => {
     if (entrada && !tempoIntervalo) {
       const entradaMin = parseTimeString(entrada);
-      const saida = entradaMin + 6 * 60 + 15;
+      const saida = entradaMin + JORNADA_MINUTOS + INTERVALO_MINIMO;
       setSaidaFinal(formatMinutesToTime(saida));
     } else if (entrada && tempoIntervalo) {
       const entradaMin = parseTimeString(entrada);
       const tempoIntMin = parseTimeString(tempoIntervalo);
-  
-      if (isNaN(tempoIntMin) || tempoIntMin < 15) {
-        setSaidaFinal("Erro: intervalo deve ser no mínimo 15 minutos");
+
+      if (isNaN(tempoIntMin) || tempoIntMin < INTERVALO_MINIMO) {
+        setSaidaFinal("Erro: intervalo deve ser no mínimo 1 hora");
         return;
       }
-      const saida = entradaMin + 6 * 60 + tempoIntMin;
+      const saida = entradaMin + JORNADA_MINUTOS + tempoIntMin;
       setSaidaFinal(formatMinutesToTime(saida));
     } else {
       setSaidaFinal("Preencha os campos corretamente");
