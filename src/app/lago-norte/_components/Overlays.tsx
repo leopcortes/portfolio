@@ -72,10 +72,12 @@ export function Aviso({ texto, tipo }: { texto: string; tipo: AvisoTipo }) {
 export function BarraSelecao({
   nome,
   feito,
+  admin,
   onAlternar,
 }: {
   nome: string;
   feito: boolean;
+  admin: boolean;
   onAlternar: () => void;
 }) {
   return (
@@ -88,17 +90,29 @@ export function BarraSelecao({
         </span>
         <span className="text-sm font-medium text-texto_principal">{nome}</span>
       </div>
-      <button
-        type="button"
-        onClick={onAlternar}
-        className={`whitespace-nowrap rounded-[7px] border px-[14px] py-2 text-xs font-medium ${
-          feito
-            ? "border-borda_azul_3 bg-transparent text-texto_secundario"
-            : "border-verde_principal bg-verde_principal text-fundo_azul_1"
-        }`}
-      >
-        {feito ? "Desmarcar" : "Marcar como corrido"}
-      </button>
+      {admin ? (
+        <button
+          type="button"
+          onClick={onAlternar}
+          className={`whitespace-nowrap rounded-[7px] border px-[14px] py-2 text-xs font-medium ${
+            feito
+              ? "border-borda_azul_3 bg-transparent text-texto_secundario"
+              : "border-verde_principal bg-verde_principal text-fundo_azul_1"
+          }`}
+        >
+          {feito ? "Desmarcar" : "Marcar como corrido"}
+        </button>
+      ) : (
+        <span
+          className={`whitespace-nowrap rounded-[7px] border px-[14px] py-2 text-xs font-medium ${
+            feito
+              ? "border-verde_principal text-verde_principal"
+              : "border-borda_azul_3 text-texto_secundario"
+          }`}
+        >
+          {feito ? "já corri" : "falta correr"}
+        </span>
+      )}
     </div>
   );
 }

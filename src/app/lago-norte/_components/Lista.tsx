@@ -16,6 +16,7 @@ type Props = {
   quadras: QuadraSpec[];
   marks: Marcacoes;
   sel: string | null;
+  admin: boolean;
   onAlternar: (key: string) => void;
   onFocar: (key: string) => void;
   onData: (key: string, valor: string) => void;
@@ -25,6 +26,7 @@ export default function Lista({
   quadras,
   marks,
   sel,
+  admin,
   onAlternar,
   onFocar,
   onData,
@@ -137,6 +139,7 @@ export default function Lista({
             key={q.id}
             quadra={q}
             sel={sel}
+            admin={admin}
             onAbrir={(id) =>
               setAbertas((atual) => ({ ...atual, [id]: !atual[id] }))
             }

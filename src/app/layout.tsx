@@ -1,5 +1,6 @@
 import "~/styles/globals.css";
 
+import { AuthProvider } from "~/components/authProvider";
 import { Toaster } from "~/components/ui/toaster";
 import { TRPCReactProvider } from "~/trpc/react";
 
@@ -17,19 +18,21 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <body>
-        <TRPCReactProvider>
-          <div
-            className="mx-auto font-lexend text-texto_principal"
-            style={
-              {
-                // width: "min(1400px,100%)",
+        <AuthProvider>
+          <TRPCReactProvider>
+            <div
+              className="mx-auto font-lexend text-texto_principal"
+              style={
+                {
+                  // width: "min(1400px,100%)",
+                }
               }
-            }
-          >
-            {children}
-          </div>
-          <Toaster />
-        </TRPCReactProvider>
+            >
+              {children}
+            </div>
+            <Toaster />
+          </TRPCReactProvider>
+        </AuthProvider>
       </body>
     </html>
   );

@@ -1,5 +1,6 @@
 "use client";
 
+import { useSession } from "next-auth/react";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import {
@@ -16,6 +17,9 @@ import Mapa, { type EstadoMapa, type MapaHandle } from "./Mapa";
 import { Aviso, BarraSelecao, Legenda, type AvisoTipo } from "./Overlays";
 
 export default function Rastreador() {
+  const { data: sessao } = useSession();
+  const admin = sessao?.user?.papel === "admin";
+
   const [marks, setMarks] = useState<Marcacoes>({});
   const [vias, setVias] = useState<Via[] | null>(null);
   const [erroRede, setErroRede] = useState(false);
@@ -100,7 +104,10 @@ export default function Rastreador() {
     salvarMarcacoes(novo);
   }
 
+  // Os controles de escrita já ficam escondidos para visitante; a trava aqui cobre
+  // o duplo clique no mapa, que não passa por nenhum botão.
   function alternar(key: string) {
+    if (!admin) return;
     const novo = { ...marks };
     // desmarcar remove a entrada inteira — nada de done:false guardado
     if (novo[key]?.done) delete novo[key];
@@ -109,6 +116,7 @@ export default function Rastreador() {
   }
 
   function definirData(key: string, valor: string) {
+    if (!admin) return;
     if (!marks[key]) return;
     persistir({ ...marks, [key]: { done: true, data: valor } });
   }
@@ -127,6 +135,7 @@ export default function Rastreador() {
           quadras={quadras}
           marks={marks}
           sel={sel}
+          admin={admin}
           onAlternar={alternar}
           onFocar={focar}
           onData={definirData}
@@ -151,6 +160,7 @@ export default function Rastreador() {
             <BarraSelecao
               nome={rotuloDe(sel)}
               feito={!!marks[sel]?.done}
+              admin={admin}
               onAlternar={() => alternar(sel)}
             />
           )}

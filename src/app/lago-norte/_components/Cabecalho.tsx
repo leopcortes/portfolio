@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { signOut, useSession } from "next-auth/react";
 
 type Props = {
   feitos: number;
@@ -44,6 +47,44 @@ export default function Cabecalho({ feitos, total }: Props) {
           />
         </div>
       </div>
+
+      <ControleSessao />
     </header>
+  );
+}
+
+const BOTAO_SESSAO =
+  "whitespace-nowrap rounded-[7px] border border-borda_azul_2 px-[13px] py-[7px] text-[11.5px] text-texto_secundario transition-colors duration-150 hover:border-azul_principal hover:text-texto_principal";
+
+function ControleSessao() {
+  const { data: sessao, status } = useSession();
+
+  // enquanto a sessão não resolve, nada aparece — evita piscar "Entrar" para o admin
+  if (status === "loading") return <div className="w-[70px] shrink-0" />;
+
+  if (sessao?.user?.papel === "admin") {
+    return (
+      <div className="flex shrink-0 items-center gap-3">
+        <span className="whitespace-nowrap text-[11px] uppercase tracking-[0.12em] text-verde_principal">
+          admin
+        </span>
+        <button
+          type="button"
+          onClick={() => signOut({ callbackUrl: "/lago-norte" })}
+          className={BOTAO_SESSAO}
+        >
+          Sair
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <Link
+      href="/login?callbackUrl=/lago-norte"
+      className={`${BOTAO_SESSAO} shrink-0`}
+    >
+      Entrar
+    </Link>
   );
 }
