@@ -1,0 +1,49 @@
+.mapa-lago-norte .leaflet-container {
+  background: #081426;
+  outline: none;
+  font-family: Lexend, sans-serif;
+}
+
+.mapa-lago-norte .leaflet-control-attribution {
+  background: rgba(8, 20, 38, 0.82);
+  color: #6d7c90;
+  font-size: 10px;
+}
+
+.mapa-lago-norte .leaflet-control-attribution a {
+  color: #8b97a7;
+}
+
+.mapa-lago-norte .leaflet-bar a {
+  background: #0a1d38;
+  color: #e5f0ff;
+  border-color: #16294a;
+}
+
+.mapa-lago-norte .leaflet-bar a:hover {
+  background: #14294a;
+}
+
+.mapa-lago-norte .leaflet-tooltip {
+  background: #0a1d38;
+  border: 1px solid #1d3a63;
+  color: #e5f0ff;
+  font-size: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+}
+
+.mapa-lago-norte .leaflet-tooltip-top:before {
+  border-top-color: #1d3a63;
+}
+
+.mapa-lago-norte .leaflet-tooltip-bottom:before {
+  border-bottom-color: #1d3a63;
+}
+
+.mapa-lago-norte .leaflet-tooltip-left:before {
+  border-left-color: #1d3a63;
+}
+
+.mapa-lago-norte .leaflet-tooltip-right:before {
+  border-right-color: #1d3a63;
+}

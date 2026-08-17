@@ -26,6 +26,16 @@ export default function MainPage() {
             PROJETO CALCULADORAS
           </Link>
         </div>
+
+        {/* Botão - Rastreador Lago Norte */}
+        <div className="flex w-full p-2">
+          <Link
+            className="pointer relative inline-block w-full bg-azul_principal py-6 text-4xl font-bold uppercase text-white/70 transition-all duration-300 ease-in hover:bg-[#4b83c8] hover:text-white/100 active:translate-y-[2px] active:bg-[#474a5c] active:shadow-[0.5px_0.5px_rgb(59,59,59)]"
+            href="/lago-norte"
+          >
+            RASTREADOR CORRIDA LN
+          </Link>
+        </div>
       </div>
     </div>
   );
