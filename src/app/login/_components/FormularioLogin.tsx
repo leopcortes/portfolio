@@ -7,7 +7,7 @@ import { useState } from "react";
 
 export default function FormularioLogin() {
   const router = useRouter();
-  const destino = useSearchParams().get("callbackUrl") ?? "/lago-norte";
+  const destino = "/";
 
   const [usuario, setUsuario] = useState("");
   const [senha, setSenha] = useState("");
@@ -97,7 +97,7 @@ export default function FormularioLogin() {
         href="/lago-norte"
         className="text-center text-[11.5px] text-texto_secundario hover:text-azul_principal"
       >
-        voltar ao rastreador
+        voltar
       </Link>
     </form>
   );
