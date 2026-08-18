@@ -16,7 +16,7 @@ export default function Contato({
       titulo={perfil.tituloContato}
       texto={perfil.textoContato}
     >
-      <ul className="grid gap-1 sm:grid-cols-2 lg:max-w-[760px]">
+      <ul className="grid gap-1 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
         {contatos.map((contato) => (
           <li key={contato.id} className="min-w-0">
             <LinkContato contato={contato} />

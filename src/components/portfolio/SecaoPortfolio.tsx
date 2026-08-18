@@ -31,7 +31,7 @@ export default function SecaoPortfolio({
         </h2>
 
         {texto && (
-          <p className="mt-3 max-w-[68ch] text-[0.95rem] leading-7 text-texto_secundario sm:leading-8">
+          <p className="mt-3  text-[0.95rem] leading-7 text-texto_secundario sm:leading-8">
             {texto}
           </p>
         )}
