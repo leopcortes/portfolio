@@ -80,11 +80,13 @@ function ControleSessao() {
   }
 
   return (
-    <Link
-      href="/login?callbackUrl=/lago-norte"
-      className={`${BOTAO_SESSAO} shrink-0`}
-    >
-      Entrar
-    </Link>
+    <>
+      {/* <Link
+        href="/login?callbackUrl=/lago-norte"
+        className={`${BOTAO_SESSAO} shrink-0`}
+      >
+        Entrar
+      </Link> */}
+    </>
   );
 }

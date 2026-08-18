@@ -109,3 +109,12 @@ enum AcaoContato {
     COPIAR
     LINK
 }
+
+/// Progresso do rastreador de corrida do Lago Norte. A chave é o conjunto
+/// (ex: "QI-7-3", ver chaveDe() em _lib/quadras.ts) — existir a linha já significa
+/// "corrido"; não há campo booleano porque a ausência da linha é o estado "falta correr".
+model MarcacaoRua {
+    chave String @id
+    /// Data escolhida pelo usuário (YYYY-MM-DD, local), não a data de criação da linha.
+    data  String
+}

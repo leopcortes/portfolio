@@ -116,3 +116,46 @@ export function BarraSelecao({
     </div>
   );
 }
+
+export function AvisoImportacao({
+  quantidade,
+  importando,
+  onImportar,
+  onIgnorar,
+}: {
+  quantidade: number;
+  importando: boolean;
+  onImportar: () => void;
+  onIgnorar: () => void;
+}) {
+  return (
+    <div className="absolute left-1/2 top-[18px] z-[600] flex max-w-[460px] -translate-x-1/2 flex-col gap-[10px] rounded-[10px] border border-borda_azul_2 bg-fundo_azul_2/[0.96] px-4 py-[13px] shadow-[0_10px_30px_rgba(0,0,0,0.45)]">
+      <div className="flex items-start gap-[10px]">
+        <span className="mt-[5px] h-[7px] w-[7px] shrink-0 rounded-[99px] bg-amarelo_aviso" />
+        <span className="text-xs leading-[1.45] text-texto_principal">
+          Este navegador tem {quantidade}{" "}
+          {quantidade === 1 ? "marcação salva" : "marcações salvas"} de antes do
+          banco de dados. Importar para não perder o progresso?
+        </span>
+      </div>
+      <div className="flex justify-end gap-2">
+        <button
+          type="button"
+          onClick={onIgnorar}
+          disabled={importando}
+          className="whitespace-nowrap rounded-[7px] border border-borda_azul_3 px-[13px] py-[7px] text-[11.5px] text-texto_secundario transition-colors duration-150 hover:text-texto_principal disabled:cursor-not-allowed disabled:opacity-60"
+        >
+          Ignorar
+        </button>
+        <button
+          type="button"
+          onClick={onImportar}
+          disabled={importando}
+          className="whitespace-nowrap rounded-[7px] border border-verde_principal bg-verde_principal px-[13px] py-[7px] text-[11.5px] font-medium text-fundo_azul_1 transition-colors duration-150 hover:bg-verde_hover hover:text-texto_principal disabled:cursor-not-allowed disabled:opacity-60"
+        >
+          {importando ? "Importando…" : "Importar"}
+        </button>
+      </div>
+    </div>
+  );
+}

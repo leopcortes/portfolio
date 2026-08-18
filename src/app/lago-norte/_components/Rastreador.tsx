@@ -3,10 +3,13 @@
 import { useSession } from "next-auth/react";
 import { useEffect, useMemo, useRef, useState } from "react";
 
+import { useToast } from "~/hooks/use-toast";
+import { api } from "~/trpc/react";
+
 import {
-  carregarMarcacoes,
   hoje,
-  salvarMarcacoes,
+  lerMarcacoesDoNavegador,
+  limparMarcacoesDoNavegador,
   type Marcacoes,
 } from "../_lib/marcacoes";
 import { absorverOSM, montarQuadras, rotuloDe } from "../_lib/quadras";
@@ -14,24 +17,44 @@ import { carregarRuas, type Via } from "../_lib/ruas";
 import Cabecalho from "./Cabecalho";
 import Lista from "./Lista";
 import Mapa, { type EstadoMapa, type MapaHandle } from "./Mapa";
-import { Aviso, BarraSelecao, Legenda, type AvisoTipo } from "./Overlays";
+import {
+  AvisoImportacao,
+  Aviso,
+  BarraSelecao,
+  Legenda,
+  type AvisoTipo,
+} from "./Overlays";
 
 export default function Rastreador() {
   const { data: sessao } = useSession();
   const admin = sessao?.user?.papel === "admin";
+  const { toast } = useToast();
+  const utils = api.useUtils();
 
-  const [marks, setMarks] = useState<Marcacoes>({});
+  const { data: marks = {}, isPending: marksCarregando } =
+    api.rastreador.listar.useQuery();
+
   const [vias, setVias] = useState<Via[] | null>(null);
   const [erroRede, setErroRede] = useState(false);
   const [estadoMapa, setEstadoMapa] = useState<EstadoMapa>({
     fase: "iniciando",
   });
   const [sel, setSel] = useState<string | null>(null);
+  const [importacaoDispensada, setImportacaoDispensada] = useState(false);
   const mapaRef = useRef<MapaHandle>(null);
 
-  // O progresso só existe no cliente: a lista renderiza na hora e recebe as marcas
-  // depois da hidratação.
-  useEffect(() => setMarks(carregarMarcacoes()), []);
+  // Snapshot só para o banner de importação única do progresso salvo antes do banco existir.
+  const marcasDoNavegador = useMemo(
+    () => (typeof window !== "undefined" ? lerMarcacoesDoNavegador() : {}),
+    [],
+  );
+  const chavesParaImportar = Object.keys(marcasDoNavegador);
+  const mostrarImportacao =
+    admin &&
+    !marksCarregando &&
+    !importacaoDispensada &&
+    Object.keys(marks).length === 0 &&
+    chavesParaImportar.length > 0;
 
   useEffect(() => {
     let vivo = true;
@@ -99,26 +122,70 @@ export default function Rastreador() {
     };
   }, [erroRede, estadoMapa, total]);
 
-  function persistir(novo: Marcacoes) {
-    setMarks(novo);
-    salvarMarcacoes(novo);
+  function aoErrar(erro: { message: string }, anterior?: Marcacoes) {
+    if (anterior) utils.rastreador.listar.setData(undefined, anterior);
+    toast({
+      description: erro.message || "Não foi possível salvar. Tente de novo.",
+      variant: "destructive",
+      duration: 3500,
+    });
   }
+
+  const marcar = api.rastreador.marcar.useMutation({
+    onMutate: async (input) => {
+      await utils.rastreador.listar.cancel();
+      const anterior = utils.rastreador.listar.getData();
+      utils.rastreador.listar.setData(undefined, (atual) => ({
+        ...atual,
+        [input.chave]: { done: true, data: input.data },
+      }));
+      return { anterior };
+    },
+    onError: (erro, _input, contexto) => aoErrar(erro, contexto?.anterior),
+    onSettled: () => utils.rastreador.listar.invalidate(),
+  });
+
+  const desmarcar = api.rastreador.desmarcar.useMutation({
+    onMutate: async (input) => {
+      await utils.rastreador.listar.cancel();
+      const anterior = utils.rastreador.listar.getData();
+      utils.rastreador.listar.setData(undefined, (atual) => {
+        const novo = { ...atual };
+        delete novo[input.chave];
+        return novo;
+      });
+      return { anterior };
+    },
+    onError: (erro, _input, contexto) => aoErrar(erro, contexto?.anterior),
+    onSettled: () => utils.rastreador.listar.invalidate(),
+  });
+
+  const importar = api.rastreador.importar.useMutation({
+    onSuccess: async (resultado) => {
+      await utils.rastreador.listar.invalidate();
+      limparMarcacoesDoNavegador();
+      setImportacaoDispensada(true);
+      toast({
+        description: `${resultado.importadas} marcações importadas para o banco.`,
+        duration: 3000,
+      });
+    },
+    onError: (erro) =>
+      toast({ description: erro.message, variant: "destructive", duration: 4000 }),
+  });
 
   // Os controles de escrita já ficam escondidos para visitante; a trava aqui cobre
   // o duplo clique no mapa, que não passa por nenhum botão.
   function alternar(key: string) {
     if (!admin) return;
-    const novo = { ...marks };
-    // desmarcar remove a entrada inteira — nada de done:false guardado
-    if (novo[key]?.done) delete novo[key];
-    else novo[key] = { done: true, data: hoje() };
-    persistir(novo);
+    if (marks[key]?.done) desmarcar.mutate({ chave: key });
+    else marcar.mutate({ chave: key, data: hoje() });
   }
 
   function definirData(key: string, valor: string) {
     if (!admin) return;
     if (!marks[key]) return;
-    persistir({ ...marks, [key]: { done: true, data: valor } });
+    marcar.mutate({ chave: key, data: valor });
   }
 
   function focar(key: string) {
@@ -155,7 +222,23 @@ export default function Rastreador() {
           />
 
           <Legenda />
-          {aviso && <Aviso texto={aviso.texto} tipo={aviso.tipo} />}
+          {mostrarImportacao ? (
+            <AvisoImportacao
+              quantidade={chavesParaImportar.length}
+              importando={importar.isPending}
+              onImportar={() =>
+                importar.mutate(
+                  chavesParaImportar.map((chave) => ({
+                    chave,
+                    data: marcasDoNavegador[chave]!.data,
+                  })),
+                )
+              }
+              onIgnorar={() => setImportacaoDispensada(true)}
+            />
+          ) : (
+            aviso && <Aviso texto={aviso.texto} tipo={aviso.tipo} />
+          )}
           {sel && (
             <BarraSelecao
               nome={rotuloDe(sel)}

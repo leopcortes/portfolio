@@ -2,6 +2,7 @@ import { contatoRouter } from "~/server/api/routers/contato";
 import { experienciaRouter } from "~/server/api/routers/experiencia";
 import { perfilRouter } from "~/server/api/routers/perfil";
 import { projetoRouter } from "~/server/api/routers/projeto";
+import { rastreadorRouter } from "~/server/api/routers/rastreador";
 import { skillRouter } from "~/server/api/routers/skill";
 import { createCallerFactory, createTRPCRouter } from "~/server/api/trpc";
 
@@ -14,6 +15,7 @@ export const appRouter = createTRPCRouter({
   perfil: perfilRouter,
   experiencia: experienciaRouter,
   projeto: projetoRouter,
+  rastreador: rastreadorRouter,
   skill: skillRouter,
   contato: contatoRouter,
 });

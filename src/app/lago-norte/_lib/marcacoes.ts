@@ -1,11 +1,16 @@
 export type Marcacao = { done: true; data: string };
 export type Marcacoes = Record<string, Marcacao>;
 
-const KEY = "lagonorte.marks.v1";
+const CHAVE_LOCALSTORAGE = "lagonorte.marks.v1";
 
-export function carregarMarcacoes(): Marcacoes {
+/**
+ * Lê o progresso salvo no localStorage deste navegador — versão anterior ao banco
+ * de dados. Usada só pelo fluxo de importação única em Rastreador.tsx; nada mais
+ * grava aqui.
+ */
+export function lerMarcacoesDoNavegador(): Marcacoes {
   try {
-    const raw = localStorage.getItem(KEY);
+    const raw = localStorage.getItem(CHAVE_LOCALSTORAGE);
     const d: unknown = raw ? JSON.parse(raw) : null;
     return d && typeof d === "object" ? (d as Marcacoes) : {};
   } catch {
@@ -13,11 +18,11 @@ export function carregarMarcacoes(): Marcacoes {
   }
 }
 
-export function salvarMarcacoes(marks: Marcacoes) {
+export function limparMarcacoesDoNavegador() {
   try {
-    localStorage.setItem(KEY, JSON.stringify(marks));
+    localStorage.removeItem(CHAVE_LOCALSTORAGE);
   } catch {
-    // navegador sem localStorage disponível: o progresso vale só para a sessão
+    // sem localStorage disponível: nada para limpar
   }
 }
 
