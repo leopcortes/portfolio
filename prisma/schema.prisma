@@ -7,7 +7,10 @@ generator client {
 
 datasource db {
     provider = "postgresql"
-    url      = env("DATABASE_URL")
+    // url passa pelo pooler (serverless abre muitas conexões); directUrl é conexão
+    // direta, exigida pelo Migrate, que usa advisory locks que o PgBouncer não suporta.
+    url       = env("DATABASE_URL")
+    directUrl = env("DIRECT_URL")
 }
 
 /// Linha única (id = 1) com os textos de abertura do portfólio.
