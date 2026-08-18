@@ -65,8 +65,17 @@
   * {
     @apply border-border;
   }
+  /* A classe `.dark` do shadcn nunca é aplicada neste app — cada tela pinta seu
+     próprio fundo escuro por cima. Sem isto, html/body ficam no branco padrão do
+     tema claro (--background), e aparecem no rubber-band do scroll (macOS/iOS)
+     além do fim do conteúdo. Fixo aqui, fora do sistema de tokens, para não afetar
+     os componentes shadcn que usam bg-background/text-foreground explicitamente. */
+  html,
   body {
-    @apply bg-background text-foreground;
+    background-color: theme("colors.fundo_azul_1");
+  }
+  body {
+    @apply text-foreground;
   }
 }
 
