@@ -1,4 +1,8 @@
-import { postRouter } from "~/server/api/routers/post";
+import { contatoRouter } from "~/server/api/routers/contato";
+import { experienciaRouter } from "~/server/api/routers/experiencia";
+import { perfilRouter } from "~/server/api/routers/perfil";
+import { projetoRouter } from "~/server/api/routers/projeto";
+import { skillRouter } from "~/server/api/routers/skill";
 import { createCallerFactory, createTRPCRouter } from "~/server/api/trpc";
 
 /**
@@ -7,7 +11,11 @@ import { createCallerFactory, createTRPCRouter } from "~/server/api/trpc";
  * All routers added in /api/routers should be manually added here.
  */
 export const appRouter = createTRPCRouter({
-  post: postRouter,
+  perfil: perfilRouter,
+  experiencia: experienciaRouter,
+  projeto: projetoRouter,
+  skill: skillRouter,
+  contato: contatoRouter,
 });
 
 // export type definition of API
@@ -17,7 +25,7 @@ export type AppRouter = typeof appRouter;
  * Create a server-side caller for the tRPC API.
  * @example
  * const trpc = createCaller(createContext);
- * const res = await trpc.post.all();
- *       ^? Post[]
+ * const res = await trpc.projeto.listar();
+ *       ^? Projeto[]
  */
 export const createCaller = createCallerFactory(appRouter);

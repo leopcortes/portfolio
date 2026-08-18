@@ -1,3 +1,8 @@
+import { notFound } from "next/navigation";
+
+import AncoraSecao from "~/components/portfolio/AncoraSecao";
+import { api } from "~/trpc/server";
+
 import Contato from "./_components/Contato";
 import Experiencias from "./_components/Experiencias";
 import Footer from "./_components/Footer";
@@ -6,21 +11,43 @@ import Navbar from "./_components/Navbar";
 import Projetos from "./_components/Projetos";
 import SobreMim from "./_components/SobreMim";
 
-export default function Portfolio() {
+export default async function Portfolio() {
+  const [perfil, experiencias, projetos, categorias, contatos] = await Promise.all([
+    api.perfil.obter(),
+    api.experiencia.listar(),
+    api.projeto.listar(),
+    api.skill.listarCategorias(),
+    api.contato.listar(),
+  ]);
+
+  if (!perfil) notFound();
+
   return (
-    <div className="flex h-full flex-col bg-fundo_azul_1 text-texto_principal">
+    <div className="flex min-h-screen flex-col bg-fundo_azul_1 text-texto_principal">
       <Navbar />
-      <div className="mb-32 mt-[140px] grid grid-cols-9 gap-4 lg:grid-cols-5">
-        <div className="col-span-1"></div>
-        <div className="col-span-7 flex flex-col gap-32 lg:col-span-3">
-          <Inicio />
-          <SobreMim />
-          <Projetos />
-          <Experiencias />
-          <Contato />
-        </div>
-        <div className="col-span-1"></div>
-      </div>
+
+      <main className="mx-auto mb-24 mt-24 flex w-full max-w-[1200px] flex-1 flex-col gap-20 px-5 sm:mt-28 sm:gap-24 sm:px-8 lg:gap-32">
+        <AncoraSecao name="inicio">
+          <Inicio perfil={perfil} />
+        </AncoraSecao>
+
+        <AncoraSecao name="sobremim">
+          <SobreMim perfil={perfil} categorias={categorias} />
+        </AncoraSecao>
+
+        <AncoraSecao name="projetos">
+          <Projetos perfil={perfil} projetos={projetos} />
+        </AncoraSecao>
+
+        <AncoraSecao name="experiencias">
+          <Experiencias perfil={perfil} experiencias={experiencias} />
+        </AncoraSecao>
+
+        <AncoraSecao name="contatos">
+          <Contato perfil={perfil} contatos={contatos} />
+        </AncoraSecao>
+      </main>
+
       <Footer />
     </div>
   );

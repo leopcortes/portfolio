@@ -11,7 +11,7 @@ import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
 
-import { getServerAuthSession } from "~/server/auth";
+import { ehAdmin, getServerAuthSession } from "~/server/auth";
 import { db } from "~/server/db";
 
 /**
@@ -131,3 +131,16 @@ export const protectedProcedure = t.procedure
       },
     });
   });
+
+/**
+ * Admin procedure
+ *
+ * Toda escrita de conteúdo do portfólio passa por aqui. Hoje o único usuário do sistema já é
+ * admin, mas checar o papel evita que uma conta futura sem privilégio herde acesso de escrita.
+ */
+export const adminProcedure = protectedProcedure.use(({ ctx, next }) => {
+  if (!ehAdmin(ctx.session.user.papel)) {
+    throw new TRPCError({ code: "FORBIDDEN" });
+  }
+  return next({ ctx });
+});
