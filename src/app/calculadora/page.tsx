@@ -9,7 +9,6 @@ import {
   Clock,
   DatabaseZap,
   Gauge,
-  GraduationCap,
   Paintbrush,
   Rabbit,
   Ruler,
@@ -21,29 +20,33 @@ import {
 } from "lucide-react";
 import ButtonCalculator from "~/components/buttonCalculator";
 
+const CORES = {
+  numerica: "bg-[#e02443] hover:bg-[#c20e2c] active:bg-[#c20e2c]",
+  associacao: "bg-[#814e13] hover:bg-[#663b0b] active:bg-[#663b0b]",
+  cores: "bg-[#bea05d] hover:bg-[#a7894f] active:bg-[#a7894f]",
+  saude: "bg-[#194b8c] hover:bg-[#0f3566] active:bg-[#0f3566]",
+  corrida: "bg-[#ed4224] hover:bg-[#b1321c] active:bg-[#b1321c]",
+  trabalho: "bg-[#0045c6] hover:bg-[#003393] active:bg-[#003393]",
+} as const;
+
 export default function Calculadora() {
   return (
-    <div className="flex min-h-screen w-full items-center justify-center bg-[#212121] p-8 sm:p-24">
-      <div className="grid w-full grid-cols-1 bg-[#212121] md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+    <main className="flex min-h-dvh w-full items-center justify-center bg-calc_fundo px-4 py-10 sm:px-8 sm:py-16">
+      {/* auto-fit em vez de breakpoints fixos: as colunas acompanham a largura
+          disponível em vez de saltarem só em md/lg/xl. */}
+      <div className="grid w-full max-w-6xl grid-cols-[repeat(auto-fit,minmax(15rem,1fr))] gap-3">
         <ButtonCalculator
           link="/calculadora/outros/cientifica"
           text="Científica"
           icon={<Calculator strokeWidth={2.5} />}
-          color="bg-[#e02443] hover:bg-[#c20e2c] active:bg-[#c20e2c]"
+          color={CORES.numerica}
         />
 
         <ButtonCalculator
           link="/calculadora/outros/sistemas"
           text="Sistemas"
           icon={<SquareSigma strokeWidth={2.5} />}
-          color="bg-[#e02443] hover:bg-[#c20e2c] active:bg-[#c20e2c]"
-        />
-
-        <ButtonCalculator
-          link="/calculadora/outros/sigaa"
-          text="SIGAA"
-          icon={<GraduationCap strokeWidth={2.5} />}
-          color="bg-[#00853e] hover:bg-[#046d35] active:bg-[#046d35]"
+          color={CORES.numerica}
         />
 
         <ButtonCalculator
@@ -104,51 +107,51 @@ export default function Calculadora() {
           link="/calculadora/associacao/resistores"
           text="Resistores"
           icon={<Unplug strokeWidth={2.5} />}
-          color="bg-[#814e13] hover:bg-[#663b0b] active:bg-[#663b0b]"
+          color={CORES.associacao}
         />
 
         <ButtonCalculator
           link="/calculadora/associacao/capacitores"
           text="Capacitores"
           icon={<CircuitBoard strokeWidth={2.5} />}
-          color="bg-[#814e13] hover:bg-[#663b0b] active:bg-[#663b0b]"
+          color={CORES.associacao}
         />
 
         <ButtonCalculator
           link="/calculadora/associacao/indutores"
           text="Indutores"
           icon={<BatteryCharging strokeWidth={2.5} />}
-          color="bg-[#814e13] hover:bg-[#663b0b] active:bg-[#663b0b]"
+          color={CORES.associacao}
         />
 
         <ButtonCalculator
           link="/calculadora/outros/coresresistores"
           text="Cores Resistores"
           icon={<Paintbrush strokeWidth={2.5} />}
-          color="bg-[#bea05d] hover:bg-[#a7894f] active:bg-[#a7894f]"
+          color={CORES.cores}
         />
 
         <ButtonCalculator
           link="/calculadora/outros/imc"
           text="IMC"
           icon={<Scale strokeWidth={2.5} />}
-          color="bg-[#194b8c] hover:bg-[#0f3566] active:bg-[#0f3566]"
+          color={CORES.saude}
         />
 
         <ButtonCalculator
           link="/calculadora/outros/pace"
           text="Pace"
           icon={<Rabbit strokeWidth={2.5} />}
-          color="bg-[#ed4224] hover:bg-[#b1321c] active:bg-[#b1321c]"
+          color={CORES.corrida}
         />
 
         <ButtonCalculator
           link="/calculadora/outros/exati"
           text="Expediente"
           icon={<BriefcaseBusiness strokeWidth={2.5} />}
-          color="bg-[#0045c6] hover:bg-[#003393] active:bg-[#003393]"
+          color={CORES.trabalho}
         />
       </div>
-    </div>
+    </main>
   );
 }

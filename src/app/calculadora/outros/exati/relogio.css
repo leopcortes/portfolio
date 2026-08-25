@@ -1,0 +1,16 @@
+/* O TimePicker traz `border: thin solid gray` no wrapper, pensado para fundo
+   claro. As classes BEM da biblioteca não dão para alcançar por variante
+   arbitrária do Tailwind, que converte `_` em espaço e transformaria
+   `react-time-picker__wrapper` em `react-time-picker wrapper`. Mesmo padrão
+   usado em lago-norte/_components/mapa.css. */
+.campo-horario .react-time-picker__wrapper {
+  border: none;
+}
+
+.campo-horario .react-time-picker__inputGroup__input:focus-visible {
+  outline: none;
+}
+
+.campo-horario .react-time-picker__inputGroup__input:invalid {
+  background: rgba(229, 72, 77, 0.25);
+}

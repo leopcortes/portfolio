@@ -34,6 +34,11 @@ export default {
         azul_acesso: "#2f4a70",
         amarelo_aviso: "#f5a524",
         vermelho_aviso: "#e5484d",
+        calc_fundo: "#212121",
+        calc_superficie: "#303030",
+        calc_campo: "#262626",
+        calc_acento: "#194b8c",
+        calc_acento_hover: "#123a6e",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         card: {
