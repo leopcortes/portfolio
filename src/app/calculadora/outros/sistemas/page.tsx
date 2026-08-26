@@ -9,9 +9,8 @@ import PainelResultado from "~/components/calculadora/PainelResultado";
 import TelaCalculadora from "~/components/calculadora/TelaCalculadora";
 import { Input } from "~/components/ui/input";
 import { formatarResultado, parsearNumero } from "~/lib/calculadora/conversao";
-import { resolverSistema } from "~/lib/calculadora/sistemaLinear";
+import { resolverSistema, VARIAVEIS } from "~/lib/calculadora/sistemaLinear";
 
-const VARIAVEIS = ["x", "y", "z"];
 const EQUACOES = [0, 1, 2];
 const COLUNAS = [0, 1, 2, 3];
 
@@ -62,6 +61,13 @@ export default function CalculadoraSistemas() {
     }
 
     const solucao = resolverSistema(numeros);
+
+    if (solucao.tipo === "vazio") {
+      setResultado(null);
+      setErro("Preencha ao menos uma equação.");
+      return;
+    }
+
     setErro(null);
 
     if (solucao.tipo === "impossivel") {
@@ -73,10 +79,15 @@ export default function CalculadoraSistemas() {
       return;
     }
 
-    // `+ 0` transforma o -0 que a eliminação às vezes produz em 0.
-    const { x, y, z } = solucao;
+    // Só as incógnitas que aparecem no que foi preenchido; `+ 0` troca por 0 o -0
+    // que a eliminação às vezes produz.
     setResultado(
-      `x = ${formatarResultado(x + 0)}   y = ${formatarResultado(y + 0)}   z = ${formatarResultado(z + 0)}`,
+      solucao.valores
+        .map(
+          ({ variavel, valor }) =>
+            `${variavel} = ${formatarResultado(valor + 0)}`,
+        )
+        .join("   "),
     );
   }
 

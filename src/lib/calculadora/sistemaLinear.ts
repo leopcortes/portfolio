@@ -1,77 +1,108 @@
+export const VARIAVEIS = ["x", "y", "z"] as const;
+
 export type ResultadoSistema =
-  | { tipo: "unica"; x: number; y: number; z: number }
+  | { tipo: "unica"; valores: { variavel: string; valor: number }[] }
   | { tipo: "indeterminado" }
-  | { tipo: "impossivel" };
+  | { tipo: "impossivel" }
+  | { tipo: "vazio" };
 
 const TOLERANCIA = 1e-9;
-const ORDEM = 3;
-const COLUNAS = 4;
+
+const zero = (valor: number) => Math.abs(valor) < TOLERANCIA;
 
 /**
- * Gauss-Jordan com pivoteamento parcial sobre a matriz aumentada 3x4.
+ * Resolve o sistema considerando apenas o que foi preenchido.
  *
- * O pivoteamento não é preciosismo: sem ele um pivô quase-zero amplifica o erro de
- * arredondamento e um sistema bem-comportado sai errado. E a classificação usa
- * tolerância — o legado comparava floats com `!=` exato, então um resíduo de 1e-16
- * bastava para ele declarar "sem solução" num sistema perfeitamente solúvel.
+ * Linha totalmente em branco não é a equação "0x + 0y + 0z = 0", é uma equação que
+ * o usuário não escreveu — e coluna sem nenhum coeficiente é uma incógnita que não
+ * existe no sistema dele. Sem essa distinção, digitar só `2x + 3y = 8` e `x + y = 3`
+ * produzia uma terceira linha nula e um `z` livre, e a resposta virava "infinitas
+ * soluções" quando x e y estão perfeitamente determinados.
+ *
+ * Trabalha então sobre a submatriz das equações e incógnitas usadas, com
+ * Gauss-Jordan e pivoteamento parcial.
  */
 export function resolverSistema(linhas: number[][]): ResultadoSistema {
-  const m = new Float64Array(ORDEM * COLUNAS);
+  const usadas = linhas.filter((linha) => linha.some((valor) => !zero(valor)));
+  if (usadas.length === 0) return { tipo: "vazio" };
+
+  const colunas = VARIAVEIS.map((_, indice) => indice).filter((indice) =>
+    usadas.some((linha) => !zero(linha[indice] ?? 0)),
+  );
+
+  // Sobrou só termo independente: alguma equação afirma "0 = d" com d ≠ 0.
+  if (colunas.length === 0) return { tipo: "impossivel" };
+
+  const largura = colunas.length + 1;
+  const m = new Float64Array(usadas.length * largura);
   const ler = (linha: number, coluna: number) =>
-    m[linha * COLUNAS + coluna] ?? 0;
+    m[linha * largura + coluna] ?? 0;
   const gravar = (linha: number, coluna: number, valor: number) => {
-    m[linha * COLUNAS + coluna] = valor;
+    m[linha * largura + coluna] = valor;
   };
 
-  for (let linha = 0; linha < ORDEM; linha++) {
-    for (let coluna = 0; coluna < COLUNAS; coluna++) {
-      gravar(linha, coluna, linhas[linha]?.[coluna] ?? 0);
-    }
-  }
-
-  for (let coluna = 0; coluna < ORDEM; coluna++) {
-    let pivo = coluna;
-    for (let linha = coluna + 1; linha < ORDEM; linha++) {
-      if (Math.abs(ler(linha, coluna)) > Math.abs(ler(pivo, coluna)))
-        pivo = linha;
-    }
-
-    if (Math.abs(ler(pivo, coluna)) < TOLERANCIA) continue;
-
-    if (pivo !== coluna) {
-      for (let j = 0; j < COLUNAS; j++) {
-        const guardado = ler(coluna, j);
-        gravar(coluna, j, ler(pivo, j));
-        gravar(pivo, j, guardado);
-      }
-    }
-
-    const divisor = ler(coluna, coluna);
-    for (let j = 0; j < COLUNAS; j++)
-      gravar(coluna, j, ler(coluna, j) / divisor);
-
-    for (let linha = 0; linha < ORDEM; linha++) {
-      if (linha === coluna) continue;
-      const fator = ler(linha, coluna);
-      if (fator === 0) continue;
-      for (let j = 0; j < COLUNAS; j++) {
-        gravar(linha, j, ler(linha, j) - fator * ler(coluna, j));
-      }
-    }
-  }
-
-  // Uma linha só de zeros nos coeficientes: 0 = d. Se d ≠ 0 o sistema é impossível;
-  // se d = 0 a linha é redundante e sobram infinitas soluções.
-  for (let linha = 0; linha < ORDEM; linha++) {
-    const semCoeficientes = [0, 1, 2].every(
-      (coluna) => Math.abs(ler(linha, coluna)) < TOLERANCIA,
+  usadas.forEach((linha, indice) => {
+    colunas.forEach((coluna, destino) =>
+      gravar(indice, destino, linha[coluna] ?? 0),
     );
-    if (semCoeficientes) {
-      return Math.abs(ler(linha, 3)) < TOLERANCIA
-        ? { tipo: "indeterminado" }
-        : { tipo: "impossivel" };
+    gravar(indice, colunas.length, linha[3] ?? 0);
+  });
+
+  let posto = 0;
+  for (
+    let coluna = 0;
+    coluna < colunas.length && posto < usadas.length;
+    coluna++
+  ) {
+    let melhor = posto;
+    for (let linha = posto + 1; linha < usadas.length; linha++) {
+      if (Math.abs(ler(linha, coluna)) > Math.abs(ler(melhor, coluna)))
+        melhor = linha;
+    }
+
+    if (zero(ler(melhor, coluna))) continue;
+
+    if (melhor !== posto) {
+      for (let j = 0; j < largura; j++) {
+        const guardado = ler(posto, j);
+        gravar(posto, j, ler(melhor, j));
+        gravar(melhor, j, guardado);
+      }
+    }
+
+    const divisor = ler(posto, coluna);
+    for (let j = 0; j < largura; j++) gravar(posto, j, ler(posto, j) / divisor);
+
+    for (let linha = 0; linha < usadas.length; linha++) {
+      if (linha === posto) continue;
+      const fator = ler(linha, coluna);
+      if (zero(fator)) continue;
+      for (let j = 0; j < largura; j++) {
+        gravar(linha, j, ler(linha, j) - fator * ler(posto, j));
+      }
+    }
+
+    posto++;
+  }
+
+  for (let linha = 0; linha < usadas.length; linha++) {
+    const semCoeficientes = colunas.every((_, coluna) =>
+      zero(ler(linha, coluna)),
+    );
+    if (semCoeficientes && !zero(ler(linha, colunas.length))) {
+      return { tipo: "impossivel" };
     }
   }
 
-  return { tipo: "unica", x: ler(0, 3), y: ler(1, 3), z: ler(2, 3) };
+  if (posto < colunas.length) return { tipo: "indeterminado" };
+
+  // Com posto igual ao número de incógnitas, cada coluna recebeu o pivô na sua
+  // vez, então a linha k guarda o valor da k-ésima incógnita usada.
+  return {
+    tipo: "unica",
+    valores: colunas.map((coluna, k) => ({
+      variavel: VARIAVEIS[coluna] ?? "?",
+      valor: ler(k, colunas.length),
+    })),
+  };
 }
