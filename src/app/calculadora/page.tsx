@@ -31,126 +31,146 @@ const CORES = {
 
 export default function Calculadora() {
   return (
-    <main className="flex min-h-dvh w-full items-center justify-center bg-calc_fundo px-4 py-10 sm:px-8 sm:py-16">
-      {/* auto-fit em vez de breakpoints fixos: as colunas acompanham a largura
-          disponível em vez de saltarem só em md/lg/xl. */}
-      <div className="grid w-full max-w-6xl grid-cols-[repeat(auto-fit,minmax(15rem,1fr))] gap-3">
-        <ButtonCalculator
-          link="/calculadora/outros/cientifica"
-          text="Científica"
-          icon={<Calculator strokeWidth={2.5} />}
-          color={CORES.numerica}
-        />
+    <main className="flex flex-col gap-6 min-h-dvh w-full items-center justify-center bg-calc_fundo px-4 py-60 sm:px-8 sm:py-10">
+      <div className="flex w-full max-w-6xl flex-col gap-1">
+        <h1 className="text-3xl">Exati</h1>
 
-        <ButtonCalculator
-          link="/calculadora/outros/sistemas"
-          text="Sistemas"
-          icon={<SquareSigma strokeWidth={2.5} />}
-          color={CORES.numerica}
-        />
+        <div className="grid w-full max-w-6xl grid-cols-[repeat(auto-fit,minmax(15rem,1fr))] gap-3">
+          <ButtonCalculator
+            link="/calculadora/outros/exati"
+            text="Expediente"
+            icon={<BriefcaseBusiness strokeWidth={2.5} />}
+            color={CORES.trabalho}
+            />
+        </div>
+      </div>
 
-        <ButtonCalculator
-          link="/calculadora/conversao/tempo"
-          text="Tempo"
-          icon={<Clock strokeWidth={2.5} />}
-        />
+      <div className="flex w-full max-w-6xl flex-col gap-1">
+        <h1 className="text-3xl">Conversões</h1>
 
-        <ButtonCalculator
-          link="/calculadora/conversao/velocidade"
-          text="Velocidade"
-          icon={<Gauge strokeWidth={2.5} />}
-        />
+        <div className="grid w-full max-w-6xl grid-cols-[repeat(auto-fit,minmax(15rem,1fr))] gap-3">
+          <ButtonCalculator
+            link="/calculadora/conversao/tempo"
+            text="Tempo"
+            icon={<Clock strokeWidth={2.5} />}
+          />
 
-        <ButtonCalculator
-          link="/calculadora/conversao/massa"
-          text="Massa"
-          icon={<Weight strokeWidth={2.5} />}
-        />
+          <ButtonCalculator
+            link="/calculadora/conversao/velocidade"
+            text="Velocidade"
+            icon={<Gauge strokeWidth={2.5} />}
+          />
 
-        <ButtonCalculator
-          link="/calculadora/conversao/comprimento"
-          text="Comprimento"
-          icon={<Ruler strokeWidth={2.5} />}
-        />
+          <ButtonCalculator
+            link="/calculadora/conversao/massa"
+            text="Massa"
+            icon={<Weight strokeWidth={2.5} />}
+          />
 
-        <ButtonCalculator
-          link="/calculadora/conversao/dados"
-          text="Dados"
-          icon={<DatabaseZap strokeWidth={2.5} />}
-        />
+          <ButtonCalculator
+            link="/calculadora/conversao/comprimento"
+            text="Comprimento"
+            icon={<Ruler strokeWidth={2.5} />}
+          />
 
-        <ButtonCalculator
-          link="/calculadora/conversao/temperatura"
-          text="Temperatura"
-          icon={<ThermometerSun strokeWidth={2.5} />}
-        />
+          <ButtonCalculator
+            link="/calculadora/conversao/temperatura"
+            text="Temperatura"
+            icon={<ThermometerSun strokeWidth={2.5} />}
+          />
 
-        <ButtonCalculator
-          link="/calculadora/conversao/volume"
-          text="Volume"
-          icon={<Box strokeWidth={2.5} />}
-        />
+          <ButtonCalculator
+            link="/calculadora/conversao/volume"
+            text="Volume"
+            icon={<Box strokeWidth={2.5} />}
+          />
 
-        <ButtonCalculator
-          link="/calculadora/conversao/area"
-          text="Área"
-          icon={<ChartArea strokeWidth={2.5} />}
-        />
+          <ButtonCalculator
+            link="/calculadora/conversao/area"
+            text="Área"
+            icon={<ChartArea strokeWidth={2.5} />}
+          />
 
-        <ButtonCalculator
-          link="/calculadora/conversao/pressao"
-          text="Pressão"
-          icon={<CircleGauge strokeWidth={2.5} />}
-        />
+          <ButtonCalculator
+            link="/calculadora/conversao/pressao"
+            text="Pressão"
+            icon={<CircleGauge strokeWidth={2.5} />}
+          />
 
-        <ButtonCalculator
-          link="/calculadora/associacao/resistores"
-          text="Resistores"
-          icon={<Unplug strokeWidth={2.5} />}
-          color={CORES.associacao}
-        />
+          <ButtonCalculator
+            link="/calculadora/conversao/dados"
+            text="Dados"
+            icon={<DatabaseZap strokeWidth={2.5} />}
+          />
+        </div>
+      </div>
 
-        <ButtonCalculator
-          link="/calculadora/associacao/capacitores"
-          text="Capacitores"
-          icon={<CircuitBoard strokeWidth={2.5} />}
-          color={CORES.associacao}
-        />
+      <div className="flex w-full max-w-6xl flex-col gap-1">
+        <h1 className="text-3xl">Elétrica</h1>
 
-        <ButtonCalculator
-          link="/calculadora/associacao/indutores"
-          text="Indutores"
-          icon={<BatteryCharging strokeWidth={2.5} />}
-          color={CORES.associacao}
-        />
+        <div className="grid w-full max-w-6xl grid-cols-[repeat(auto-fit,minmax(15rem,1fr))] gap-3">
+          <ButtonCalculator
+            link="/calculadora/associacao/resistores"
+            text="Resistores"
+            icon={<Unplug strokeWidth={2.5} />}
+            color={CORES.associacao}
+          />
 
-        <ButtonCalculator
-          link="/calculadora/outros/coresresistores"
-          text="Cores Resistores"
-          icon={<Paintbrush strokeWidth={2.5} />}
-          color={CORES.cores}
-        />
+          <ButtonCalculator
+            link="/calculadora/associacao/capacitores"
+            text="Capacitores"
+            icon={<CircuitBoard strokeWidth={2.5} />}
+            color={CORES.associacao}
+          />
 
-        <ButtonCalculator
-          link="/calculadora/outros/imc"
-          text="IMC"
-          icon={<Scale strokeWidth={2.5} />}
-          color={CORES.saude}
-        />
+          <ButtonCalculator
+            link="/calculadora/associacao/indutores"
+            text="Indutores"
+            icon={<BatteryCharging strokeWidth={2.5} />}
+            color={CORES.associacao}
+          />
 
-        <ButtonCalculator
-          link="/calculadora/outros/pace"
-          text="Pace"
-          icon={<Rabbit strokeWidth={2.5} />}
-          color={CORES.corrida}
-        />
+          <ButtonCalculator
+            link="/calculadora/outros/coresresistores"
+            text="Cores Resistores"
+            icon={<Paintbrush strokeWidth={2.5} />}
+            color={CORES.cores}
+          />
+        </div>
+      </div>
 
-        <ButtonCalculator
-          link="/calculadora/outros/exati"
-          text="Expediente"
-          icon={<BriefcaseBusiness strokeWidth={2.5} />}
-          color={CORES.trabalho}
-        />
+      <div className="flex w-full max-w-6xl flex-col gap-1">
+        <h1 className="text-3xl">Outras</h1>
+
+        <div className="grid w-full max-w-6xl grid-cols-[repeat(auto-fit,minmax(15rem,1fr))] gap-3">
+          <ButtonCalculator
+            link="/calculadora/outros/cientifica"
+            text="Científica"
+            icon={<Calculator strokeWidth={2.5} />}
+            color={CORES.numerica}
+          />
+
+          <ButtonCalculator
+            link="/calculadora/outros/sistemas"
+            text="Sistemas"
+            icon={<SquareSigma strokeWidth={2.5} />}
+            color={CORES.numerica}
+          />
+
+          <ButtonCalculator
+            link="/calculadora/outros/pace"
+            text="Pace"
+            icon={<Rabbit strokeWidth={2.5} />}
+            color={CORES.corrida}
+          />
+
+          <ButtonCalculator
+            link="/calculadora/outros/imc"
+            text="IMC"
+            icon={<Scale strokeWidth={2.5} />}
+            color={CORES.saude}
+          />
+        </div>
       </div>
     </main>
   );

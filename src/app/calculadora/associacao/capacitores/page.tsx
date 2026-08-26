@@ -1,6 +1,8 @@
-import { CircuitBoard } from "lucide-react";
-import EmConstrucao from "~/components/calculadora/EmConstrucao";
+"use client";
+
+import AssociacaoComponentes from "~/components/calculadora/AssociacaoComponentes";
+import { CAPACITORES } from "~/lib/calculadora/associacoes/capacitores";
 
 export default function AssociacaoCapacitores() {
-  return <EmConstrucao titulo="Capacitores" icone={CircuitBoard} />;
+  return <AssociacaoComponentes config={CAPACITORES} />;
 }

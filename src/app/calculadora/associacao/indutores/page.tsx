@@ -1,6 +1,8 @@
-import { BatteryCharging } from "lucide-react";
-import EmConstrucao from "~/components/calculadora/EmConstrucao";
+"use client";
+
+import AssociacaoComponentes from "~/components/calculadora/AssociacaoComponentes";
+import { INDUTORES } from "~/lib/calculadora/associacoes/indutores";
 
 export default function AssociacaoIndutores() {
-  return <EmConstrucao titulo="Indutores" icone={BatteryCharging} />;
+  return <AssociacaoComponentes config={INDUTORES} />;
 }

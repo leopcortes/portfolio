@@ -1,6 +1,8 @@
-import { Unplug } from "lucide-react";
-import EmConstrucao from "~/components/calculadora/EmConstrucao";
+"use client";
+
+import AssociacaoComponentes from "~/components/calculadora/AssociacaoComponentes";
+import { RESISTORES } from "~/lib/calculadora/associacoes/resistores";
 
 export default function AssociacaoResistores() {
-  return <EmConstrucao titulo="Resistores" icone={Unplug} />;
+  return <AssociacaoComponentes config={RESISTORES} />;
 }
